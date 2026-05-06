@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DriveSafe - Sécurité Routière</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f9; color: #333; padding: 20px; }
+        .card { background: white; border-radius: 10px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h1 { color: #673ab7; text-align: center; }
+        h2 { color: #e91e63; border-bottom: 2px solid #e91e63; padding-bottom: 5px; }
+        .permis { background: #ffeb3b; padding: 5px; font-weight: bold; border-radius: 5px; }
+        ul { padding-left: 20px; }
+        li { margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>DriveSafe 🇨🇮</h1>
+    <p style="text-align:center;">Votre guide pour une route sûre et sans tracasseries.</p>
+    
+    <div class="card">
+        <p class="permis">⚠️ RAPPEL : Le Permis de Conduire est obligatoire pour tous.</p>
+    </div>
+
+    <div class="card">
+        <h2>Motos & Tricycles</h2>
+        <ul>
+            <li>Carte Grise</li>
+            <li>Assurance</li>
+            <li>Vignette</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>Véhicules Particuliers</h2>
+        <ul>
+            <li>Carte Grise</li>
+            <li>Assurance</li>
+            <li>Visite Technique</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>Transport en Commun</h2>
+        <ul>
+            <li><i>Mêmes documents que ci-dessus</i></li>
+            <li><b>+ La Patente</b></li>
+        </ul>
+    </div>
+</body>
+</html>
