@@ -3,53 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DriveSafe - Sécurité Routière</title>
-    <style>
-        body { font-family: sans-serif; background: #f4f4f9; color: #333; padding: 20px; }
-        .card { background: white; border-radius: 10px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        h1 { color: #673ab7; text-align: center; }
-        h2 { color: #e91e63; border-bottom: 2px solid #e91e63; padding-bottom: 5px; }
-        .permis { background: #ffeb3b; padding: 5px; font-weight: bold; border-radius: 5px; }
-        ul { padding-left: 20px; }
-        li { margin: 10px 0; }
-    </style>
-</head>
+    <title>DriveSafe App</title>
     <script src="https://sdk.minepi.com/pi-sdk.js"></script>
-    <script>
-      Pi.init({ version: "2.0", sandbox: true });
-    </script>
+</head>
 <body>
-    <h1>DriveSafe 🇨🇮</h1>
-    <p style="text-align:center;">Votre guide pour une route sûre et sans tracasseries.</p>
+    <h1>Bienvenue sur DriveSafe</h1>
+    <p>Prêt pour le test de transaction ?</p>
     
-    <div class="card">
-        <p class="permis">⚠️ RAPPEL : Le Permis de Conduire est obligatoire pour tous.</p>
-    </div>
+    <button id="pay-button" style="padding: 10px; background: purple; color: white;">
+        Tester le Paiement Pi
+    </button>
 
-    <div class="card">
-        <h2>Motos & Tricycles</h2>
-        <ul>
-            <li>Carte Grise</li>
-            <li>Assurance</li>
-            <li>Vignette</li>
-        </ul>
-    </div>
-
-    <div class="card">
-        <h2>Véhicules Particuliers</h2>
-        <ul>
-            <li>Carte Grise</li>
-            <li>Assurance</li>
-            <li>Visite Technique</li>
-        </ul>
-    </div>
-
-    <div class="card">
-        <h2>Transport en Commun</h2>
-        <ul>
-            <li><i>Mêmes documents que ci-dessus</i></li>
-            <li><b>+ La Patente</b></li>
-        </ul>
-    </div>
+    <script>
+        // Initialisation de la connexion avec Pi
+        const Pi = window.Pi;
+        Pi.init({ version: "2.0", sandbox: true });
+        
+        // C'est ici que nous ajouterons plus tard le code de paiement
+        console.log("Application DriveSafe prête !");
+    </script>
 </body>
 </html>
