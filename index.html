@@ -1,23 +1,8 @@
+<script src="https://sdk.minepi.com/pi-sdk.js"></script>
+<button id="p">Tester le Paiement Pi</button>
 <script>
-    window.onload = function() {
-        const Pi = window.Pi;
-        Pi.init({ version: "2.0", sandbox: true });
-
-        document.getElementById('pay-button').addEventListener('click', async function() {
-            try {
-                await Pi.createPayment({
-                    amount: 0.1,
-                    memo: "Test Final DriveSafe",
-                    metadata: { orderId: "12345" },
-                }, {
-                    onReadyForServerApproval: (id) => { console.log(id); },
-                    onReadyForServerCompletion: (id, tx) => { console.log(tx); },
-                    onCancel: (id) => { console.log("Cancel"); },
-                    onError: (err) => { console.error(err); },
-                });
-            } catch (err) {
-                console.log("Erreur SDK");
-            }
-        });
-    };
+Pi.init({version:"2.0",sandbox:true});
+document.getElementById("p").onclick=async()=>{
+try{await Pi.createPayment({amount:0.1,memo:"Test",metadata:{id:1}},{});}catch(e){console.log(e);}
+};
 </script>
