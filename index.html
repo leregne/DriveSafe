@@ -1,23 +1,44 @@
-<script>
-    const Pi = window.Pi;
-    Pi.init({ version: "2.0", sandbox: true });
 
-    async function testPayment() {
-        try {
-            const payment = await Pi.createPayment({
-                amount: 0.1,
-                memo: "Validation DriveSafe",
-                metadata: { orderId: "test-101" },
-            }, {
-                onReadyForServerApproval: (id) => { console.log("Approve"); },
-                onReadyForServerCompletion: (id, tx) => { console.log("Complete"); },
-                onCancel: (id) => { console.log("Cancel"); },
-                onError: (err, p) => { console.error("Error", err); },
-            });
-        } catch (err) {
-            console.log("Tentative d'ouverture...");
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DriveSafe</title>
+    <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f9; padding: 20px; text-align: center; }
+        .card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .btn { background: #673ab7; color: white; border: none; padding: 15px; width: 100%; border-radius: 5px; font-weight: bold; font-size: 18px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>DriveSafe 🇨🇮</h1>
+        <p>Test de validation Pi Network</p>
+        <button class="btn" id="pay-button">Tester le Paiement Pi</button>
+    </div>
+    <script>
+        const Pi = window.Pi;
+        Pi.init({ version: "2.0", sandbox: true });
+
+        async function testPayment() {
+            try {
+                await Pi.createPayment({
+                    amount: 0.1,
+                    memo: "Validation DriveSafe",
+                    metadata: { orderId: "101" },
+                }, {
+                    onReadyForServerApproval: (id) => { console.log("Approve"); },
+                    onReadyForServerCompletion: (id, tx) => { console.log("Done"); },
+                    onCancel: (id) => { console.log("Cancel"); },
+                    onError: (err) => { console.error("Error", err); },
+                });
+            } catch (err) {
+                console.log("Tentative...");
+            }
         }
-    }
-
-    document.getElementById('pay-button').addEventListener('click', testPayment);
-</script>
+        document.getElementById('pay-button').addEventListener('click', testPayment);
+    </script>
+</body>
+</html>
