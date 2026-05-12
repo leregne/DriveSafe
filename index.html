@@ -1,52 +1,23 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DriveSafe - Sécurité Routière</title>
-    <script src="https://sdk.minepi.com/pi-sdk.js"></script>
-    <style>
-        body { font-family: sans-serif; background: #f4f4f9; color: #333; padding: 20px; }
-        .card { background: white; border-radius: 10px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        h1 { color: #673ab7; text-align: center; }
-        .btn-pi { background: #673ab7; color: white; border: none; padding: 15px; width: 100%; border-radius: 5px; font-weight: bold; font-size: 16px; cursor: pointer; }
-    </style>
-</head>
-<body>
+<script>
+    const Pi = window.Pi;
+    Pi.init({ version: "2.0", sandbox: true });
 
-    <h1>DriveSafe 🇨🇮</h1>
-    
-    <div class="card">
-        <h3>Prêt pour le test de transaction ?</h3>
-        <button class="btn-pi" id="pay-button">Tester le Paiement Pi</button>
-    </div>
-
-    <div class="card">
-        <h2>Motos & Tricycles</h2>
-        <ul><li>Carte Grise</li><li>Assurance</li><li>Vignette</li></ul>
-    </div>
-
-    <script>
-        const Pi = window.Pi;
-        Pi.init({ version: "2.0", sandbox: true });
-
-        async function createPayment() {
-            try {
-                await Pi.createPayment({
-                    amount: 0.1,
-                    memo: "Test validation DriveSafe",
-                    metadata: { orderId: 12345 },
-                }, {
-                    onReadyForServerApproval: (id) => { console.log("Approve"); },
-                    onReadyForServerCompletion: (id, tx) => { console.log("Complete"); },
-                    onCancel: (id) => { console.log("Cancel"); },
-                    onError: (err, p) => { console.error("Error", err); },
-                });
-            } catch (err) {
-                alert("Ouverture du portefeuille...");
-            }
+    async function testPayment() {
+        try {
+            const payment = await Pi.createPayment({
+                amount: 0.1,
+                memo: "Validation DriveSafe",
+                metadata: { orderId: "test-101" },
+            }, {
+                onReadyForServerApproval: (id) => { console.log("Approve"); },
+                onReadyForServerCompletion: (id, tx) => { console.log("Complete"); },
+                onCancel: (id) => { console.log("Cancel"); },
+                onError: (err, p) => { console.error("Error", err); },
+            });
+        } catch (err) {
+            console.log("Tentative d'ouverture...");
         }
-        document.getElementById('pay-button').onclick = createPayment;
-    </script>
-</body>
-</html>
+    }
+
+    document.getElementById('pay-button').addEventListener('click', testPayment);
+</script>
