@@ -1,26 +1,23 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DriveSafe App</title>
-    <script src="https://sdk.minepi.com/pi-sdk.js"></script>
-</head>
-<body>
-    <h1>Bienvenue sur DriveSafe</h1>
-    <p>Prêt pour le test de transaction ?</p>
-    
-    <button id="pay-button" style="padding: 10px; background: purple; color: white;">
-        Tester le Paiement Pi
-    </button>
+<script>
+    const Pi = window.Pi;
+    Pi.init({ version: "2.0", sandbox: true });
 
-    <script>
-        // Initialisation de la connexion avec Pi
-        const Pi = window.Pi;
-        Pi.init({ version: "2.0", sandbox: true });
-        
-        // C'est ici que nous ajouterons plus tard le code de paiement
-        console.log("Application DriveSafe prête !");
-    </script>
-</body>
-</html>
+    async function createPayment() {
+        try {
+            const payment = await Pi.createPayment({
+                amount: 0.1,
+                memo: "Test de validation DriveSafe",
+                metadata: { orderId: 12345 },
+            }, {
+                onReadyForServerApproval: (paymentId) => { console.log("Prêt pour approbation"); },
+                onReadyForServerCompletion: (paymentId, txid) => { console.log("Transaction finie"); },
+                onCancel: (paymentId) => { console.log("Paiement annulé"); },
+                onError: (error, payment) => { console.error("Erreur Pi", error); },
+            });
+        } catch (err) {
+            alert("Erreur lors de l'ouverture du portefeuille Pi");
+        }
+    }
+
+    document.getElementById('pay-button').onclick = createPayment;
+</script>
