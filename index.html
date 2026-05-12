@@ -9,10 +9,10 @@
                 memo: "Test de validation DriveSafe",
                 metadata: { orderId: 12345 },
             }, {
-                onReadyForServerApproval: (paymentId) => { console.log("Prêt pour approbation"); },
-                onReadyForServerCompletion: (paymentId, txid) => { console.log("Transaction finie"); },
-                onCancel: (paymentId) => { console.log("Paiement annulé"); },
-                onError: (error, payment) => { console.error("Erreur Pi", error); },
+                onReadyForServerApproval: (paymentId) => { console.log("Ready"); },
+                onReadyForServerCompletion: (paymentId, txid) => { console.log("Done"); },
+                onCancel: (paymentId) => { console.log("Cancelled"); },
+                onError: (error, payment) => { console.error("Error", error); },
             });
         } catch (err) {
             alert("Erreur lors de l'ouverture du portefeuille Pi");
