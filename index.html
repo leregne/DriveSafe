@@ -1,1 +1,86 @@
+    <script>
+        const payButton = document.getElementById('pay-button');
+        const statusDiv = document.getElementById('status-message');
+        
+        // TON LIEN RENDER OFFICIEL
+        const BACKEND_URL = "https://drivesafe-e7gv.onrender.com";
 
+        window.onload = function() {
+            statusDiv.innerText = "SDK détecté. Initialisation...";
+            try {
+                window.Pi.init({ version: "2.0", sandbox: true });
+                
+                setTimeout(function() {
+                    statusDiv.innerText = "Connexion à Pi Network...";
+                    window.Pi.authenticate(['username', 'payments'], function(incomplete) {})
+                    .then(function(auth) {
+                        statusDiv.className = "status-box success";
+                        statusDiv.innerHTML = "Connecté : <strong>" + auth.user.username + "</strong>";
+                        payButton.disabled = false;
+                        payButton.innerText = "Payer 1 Pi";
+                    })
+                    .catch(function(err) {
+                        statusDiv.className = "status-box error";
+                        statusDiv.innerText = "Erreur : " + err.message;
+                    });
+                }, 1500);
+            } catch (e) {
+                statusDiv.className = "status-box error";
+                statusDiv.innerText = "Erreur : " + e.message;
+            }
+        };
+
+        payButton.addEventListener('click', function() {
+            payButton.disabled = true;
+            payButton.innerText = "Traitement...";
+
+            window.Pi.createPayment({
+                amount: 1,
+                memo: "Test Sandbox DriveSafe",
+                metadata: { orderId: "DS-2026" }
+            }, {
+                // Étape A : Le paiement est créé, on l'envoie à ton serveur Render pour approbation
+                onReadyForServerApproval: function(paymentId) {
+                    statusDiv.innerText = "Approbation par le serveur en cours...";
+                    
+                    fetch(`${BACKEND_URL}/approve-payment`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ paymentId: paymentId })
+                    })
+                    .then(res => res.json())
+                    .then(() => {
+                        statusDiv.innerText = "Paiement approuvé ! Signature requise...";
+                    });
+                },
+                // Étape B : L'utilisateur a signé, on envoie la complétion finale au serveur Render
+                onReadyForServerCompletion: function(paymentId, txid) {
+                    statusDiv.innerText = "Finalisation de la transaction...";
+                    
+                    fetch(`${BACKEND_URL}/complete-payment`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ paymentId: paymentId, txid: txid })
+                    })
+                    .then(res => res.json())
+                    .then(() => {
+                        statusDiv.className = "status-box success";
+                        statusDiv.innerHTML = "<strong>Paiement Réussi !</strong><br>Transaction validée.";
+                        payButton.disabled = false;
+                        payButton.innerText = "Payer 1 Pi";
+                    });
+                },
+                onCancel: function(paymentId) {
+                    payButton.disabled = false;
+                    payButton.innerText = "Payer 1 Pi";
+                    statusDiv.innerText = "Paiement annulé.";
+                },
+                onError: function(error, paymentId) {
+                    payButton.disabled = false;
+                    payButton.innerText = "Payer 1 Pi";
+                    statusDiv.className = "status-box error";
+                    statusDiv.innerText = "Erreur : " + error.message;
+                }
+            });
+        });
+    </script>
