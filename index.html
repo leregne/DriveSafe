@@ -1,8 +1,1 @@
-<script src="https://sdk.minepi.com/pi-sdk.js"></script>
-<button id="p">Tester le Paiement Pi</button>
-<script>
-Pi.init({version:"2.0",sandbox:true});
-document.getElementById("p").onclick=async()=>{
-try{await Pi.createPayment({amount:0.1,memo:"Test",metadata:{id:1}},{});}catch(e){console.log(e);}
-};
-</script>
+
