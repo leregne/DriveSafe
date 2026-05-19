@@ -27,9 +27,18 @@
         const payButton = document.getElementById('pay-button');
         const statusDiv = document.getElementById('status-message');
         const BACKEND_URL = "https://drivesafe-x7gv.onrender.com"; 
-        window.onload = function() {
+
+        // Fonction de sécurité pour initialiser Pi uniquement quand le fichier externe est prêt
+        function initPiNetwork() {
             try {
+                if (!window.Pi) {
+                    statusDiv.className = "status-box error";
+                    statusDiv.innerText = "Le fichier SDK Pi n'est pas encore accessible. Réessaie.";
+                    return;
+                }
+                
                 window.Pi.init({ version: "2.0", sandbox: true });
+                
                 window.Pi.authenticate(['username', 'payments'], function(incomplete) {
                     console.log("Paiement incomplet détecté :", incomplete);
                 })
@@ -45,9 +54,16 @@
                 });
             } catch (e) {
                 statusDiv.className = "status-box error";
-                statusDiv.innerText = "Erreur de chargement du SDK.";
+                statusDiv.innerText = "Erreur durant l'initialisation : " + e.message;
             }
+        }
+
+        // On attend le chargement complet de la page et des scripts
+        window.onload = function() {
+            // Petite pause de 500ms pour laisser le SDK s'installer confortablement en mémoire
+            setTimeout(initPiNetwork, 500);
         };
+
         payButton.addEventListener('click', function() {
             statusDiv.className = "status-box info";
             statusDiv.innerText = "Création du paiement en cours...";
